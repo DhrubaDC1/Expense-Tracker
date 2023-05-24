@@ -9,7 +9,7 @@ const Header = () => {
     if (user) {
       setLoginUser(user);
     }
-  });
+  }, []);
   const logoutHandler = () => {
     localStorage.removeItem("user");
     message.success("Log out Successfully");

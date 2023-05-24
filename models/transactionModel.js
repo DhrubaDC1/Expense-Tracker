@@ -12,22 +12,10 @@ const transactionSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: [
-        "Food",
-        "Transportation",
-        "Utilities",
-        "Housing",
-        "Insurance",
-        "Medical & Healthcare",
-        "Bank payments",
-        "Personal Spending",
-        "Entertainment",
-        "Miscellaneous",
-      ],
       required: [true, "category is required"],
     },
     date: {
-      type: Date,
+      type: String,
       required: [true, "Date is required"],
     },
     note: {
@@ -35,7 +23,7 @@ const transactionSchema = new mongoose.Schema(
       required: false,
     },
   },
-  { timestamps }
+  { timestamps: true }
 );
 
 const transactionModel = mongoose.model("transactions", transactionSchema);
