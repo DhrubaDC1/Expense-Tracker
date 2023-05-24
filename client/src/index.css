@@ -8,5 +8,11 @@
   height: 80vh;
 }
 .navbar {
-  background-color:bisque !important;
+  background-color: bisque !important;
+}
+.register-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
 }
