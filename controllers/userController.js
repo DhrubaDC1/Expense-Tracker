@@ -22,29 +22,6 @@ const loginController = async (req, res) => {
 
 // register callback
 const registerController = async (req, res) => {
-  //   const { name, email, password } = req.body;
-
-  //   let emptyFields = []
-
-  //   if(!name) {
-  //     emptyFields.push('name')
-  //   }
-  //   if(!email) {
-  //     emptyFields.push('email')
-  //   }
-  //   if(!password) {
-  //     emptyFields.push('password')
-  //   }
-  //   if(emptyFields.length > 0){
-  //     return res.status(400).json({error: 'Please fill in all the fields', emptyFields})
-  //   }
-  //   try {
-  //     const userM = await userModel.create({ name, email, password });
-  //     res.status(200).json(userM);
-  //   } catch (error) {
-  //     res.status(400).json({ error: error.message });
-  //   }
-  // };
   try {
     const newUser = new userModel(req.body);
     await newUser.save();

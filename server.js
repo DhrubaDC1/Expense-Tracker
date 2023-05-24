@@ -20,11 +20,11 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
-// routes
-// app.get("/", (req, res) => {
-//   res.send("<h1>Hello from server</h1>");
-// });
+// user routes
 app.use("/api/v1/users", userRoute);
+
+// transaction routes
+app.use("/api/v1/transactions", require("./routes/transactionRoutes"));
 
 //port
 const PORT = process.env.PORT;
