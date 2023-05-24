@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -14,16 +14,25 @@ const Login = () => {
       const { data } = await axios.post("/users/login", values);
       setLoading(false);
       message.success("Login Successful");
-      localStorage.setItem("user", JSON.stringify({ ...data, password: "" }));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...data.user, password: "" })
+      );
       navigate("/");
     } catch (error) {
       setLoading(false);
       message.error("Something went wrong");
     }
   };
+  //prevent for login user
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      navigate("/");
+    }
+  }, [navigate]);
   return (
     <>
-      <div className="register-page">
+      <div className="login-page">
         {loading && <Spinner />}
         <Form layout="vertical" onFinish={submitHandler}>
           <h1>Login Form</h1>
