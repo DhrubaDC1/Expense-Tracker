@@ -14,11 +14,13 @@
   "author": "Dhruba",
   "license": "MIT",
   "dependencies": {
+    "@ant-design/icons": "^5.1.2",
     "colors": "^1.4.0",
     "concurrently": "^8.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "moment": "^2.29.4",
     "mongodb": "^5.5.0",
     "mongoose": "^7.2.0",
     "morgan": "^1.10.0",

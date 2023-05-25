@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select, message, Table } from "antd";
+import { Modal, Form, Input, Select, message, Table, DatePicker } from "antd";
+import { UnorderedListOutlined, AreaChartOutlined } from "@ant-design/icons";
 import Layout from "../components/Layout/Layout";
 import axios from "axios";
 import Spinner from "../components/Spinner";
+import moment from "moment";
+import { icons } from "antd/es/image/PreviewGroup";
+import Analytics from "../components/Analytics";
+
+const { RangePicker } = DatePicker;
 
 const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allTransaction, setAllTransaction] = useState([]);
+  const [frequency, setFrequency] = useState("custom");
+  const [selectedDate, setSelectedDate] = useState([]);
+  const [viewData, setViewData] = useState("table");
 
   // table data
   const columns = [
@@ -26,6 +35,7 @@ const HomePage = () => {
     {
       title: "Date",
       dataIndex: "date",
+      render: (text) => <span>{moment(text).format("Do MMM, YYYY")}</span>,
     },
     {
       title: "Notes",
@@ -36,27 +46,28 @@ const HomePage = () => {
     },
   ];
 
-  // getAll Transactions
-  const getAllTransactions = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      setLoading(true);
-      const res = await axios.post("/transactions/get-transaction", {
-        userid: user._id,
-      });
-      setLoading(false);
-      setAllTransaction(res.data);
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-      message.error("Fetch Issue with Loading Expenses");
-    }
-  };
-
   // userEffect Hook
   useEffect(() => {
+    // getAll Transactions
+    const getAllTransactions = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        setLoading(true);
+        const res = await axios.post("/transactions/get-transaction", {
+          userid: user._id,
+          frequency,
+          selectedDate,
+        });
+        setLoading(false);
+        setAllTransaction(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+        message.error("Fetch Issue with Loading Expenses");
+      }
+    };
     getAllTransactions();
-  }, []);
+  }, [frequency, selectedDate]);
 
   //form handling
   const handleSubmit = async (values) => {
@@ -66,7 +77,7 @@ const HomePage = () => {
       await axios.post("/transactions/add-transaction", {
         ...values,
         userid: user._id,
-        key: user._id,
+        key: Math.random(),
       });
       message.success("Expense Added Successfully");
       setLoading(false);
@@ -81,7 +92,35 @@ const HomePage = () => {
     <Layout>
       {loading && <Spinner />}
       <div className="filters">
-        <div>range filters</div>
+        <div>
+          <h6>Expenditure Report:</h6>
+          <Select value={frequency} onChange={(values) => setFrequency(values)}>
+            <Select.Option value="7">LAST 1 Week</Select.Option>
+            <Select.Option value="30">LAST 1 Month</Select.Option>
+            <Select.Option value="365">LAST 1 Year</Select.Option>
+            <Select.Option value="custom">Custom</Select.Option>
+          </Select>
+          {frequency === "custom" && (
+            <RangePicker
+              value={selectedDate}
+              onChange={(values) => setSelectedDate(values)}
+            />
+          )}
+        </div>
+        <div className="">
+          <UnorderedListOutlined
+            className={`mx-2 ${
+              viewData === "table" ? "active-icon" : "inactive-icon"
+            }`}
+            onClick={() => setViewData("table")}
+          />
+          <AreaChartOutlined
+            className={`mx-2 ${
+              viewData === "analytics" ? "active-icon" : "inactive-icon"
+            }`}
+            onClick={() => setViewData("analytics")}
+          />
+        </div>
         <div>
           <button
             className="btn btn-primary"
@@ -91,9 +130,12 @@ const HomePage = () => {
           </button>
         </div>
       </div>
-      <div className="content">
+      {viewData === "table" ? (
         <Table columns={columns} dataSource={allTransaction} />
-      </div>
+      ) : (
+        <Analytics allTransaction={allTransaction} />
+      )}
+      <div className="content"></div>
       <Modal
         title="Add Expense"
         open={showModal}
