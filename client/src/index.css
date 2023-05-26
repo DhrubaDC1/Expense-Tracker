@@ -8,7 +8,21 @@
   height: 80vh;
 }
 .navbar {
-  background-color: bisque !important;
+  background-color: #d82148 !important;
+}
+.nav-link {
+  color: white !important;
+}
+.navbar-brand {
+  margin-left: 10px;
+  color: white;
+  text-shadow: black;
+}
+.navbar-brand:hover {
+  color: white;
+}
+.navbar-brand:active {
+  color: white;
 }
 .register-page {
   display: flex;
@@ -32,8 +46,21 @@
   cursor: pointer;
 }
 .active-icon {
-  color: red;
+  color: #d82148;
 }
 .inactive-icon {
   color: gray;
+}
+.text {
+  color: #d82148;
+}
+.btn {
+  color: white;
+  font-weight: 600;
+  background-color: #d82148;
+  border: none;
+}
+.btn:hover {
+  color: #d82148;
+  background-color: white;
 }

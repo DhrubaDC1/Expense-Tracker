@@ -42,7 +42,9 @@ const Register = () => {
             <Input type="password" />
           </Form.Item>
           <div className="d-flex justify-content-between">
-            <Link to="/login">Login here</Link>
+            <Link className="text" to="/login">
+              Login here
+            </Link>
             <button className="btn btn-primary">Register</button>
           </div>
         </Form>

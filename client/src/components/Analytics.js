@@ -1,12 +1,6 @@
 // import { Progress } from "antd";
 import React from "react";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  elements,
-} from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -96,10 +90,10 @@ const Analytics = ({ allTransaction }) => {
 
   const data = {
     labels: [
-      "Food",
+      "Housing",
       "Transportation",
       "Utilities",
-      "Housing",
+      "Food",
       "Insurance",
       "Medical & Healthcare",
       "Bank payments",
@@ -110,10 +104,10 @@ const Analytics = ({ allTransaction }) => {
     datasets: [
       {
         data: [
-          foodAmount,
+          housingAmount,
           transportationAmount,
           utilitiesAmount,
-          housingAmount,
+          foodAmount,
           insuranceAmount,
           medicalAmount,
           bankAmount,
@@ -122,28 +116,28 @@ const Analytics = ({ allTransaction }) => {
           miscellaneousAmount,
         ],
         backgroundColor: [
-          "black",
-          "red",
-          "green",
-          "teal",
-          "cyan",
-          "yellow",
-          "pink",
-          "purple",
-          "blue",
-          "orange",
+          "#9e0142",
+          "#d53e4f",
+          "#f46d43",
+          "#fdae61",
+          "#fee08b",
+          "#e6f598",
+          "#abdda4",
+          "#66c2a5",
+          "#3288bd",
+          "#5e4fa2",
         ],
         borderColor: [
-          "black",
-          "red",
-          "green",
-          "teal",
-          "cyan",
-          "yellow",
-          "pink",
-          "purple",
-          "blue",
-          "orange",
+          "#9e0142",
+          "#d53e4f",
+          "#f46d43",
+          "#fdae61",
+          "#fee08b",
+          "#e6f598",
+          "#abdda4",
+          "#66c2a5",
+          "#3288bd",
+          "#5e4fa2",
         ],
       },
     ],
@@ -206,7 +200,7 @@ const Analytics = ({ allTransaction }) => {
       </div>
       <div className="container-fluid" style={{ margin: 20 }}>
         <center>
-          <h2>Total Expenditure: {totalAmount}</h2>
+          <h2>Total Expenditure: {totalAmount} tk</h2>
         </center>
       </div>
     </>

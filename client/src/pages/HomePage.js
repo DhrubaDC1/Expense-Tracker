@@ -3,6 +3,7 @@ import { Modal, Form, Input, Select, message, Table, DatePicker } from "antd";
 import {
   UnorderedListOutlined,
   AreaChartOutlined,
+  BarChartOutlined,
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
@@ -19,10 +20,10 @@ const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allTransaction, setAllTransaction] = useState([]);
-  const [frequency, setFrequency] = useState("custom");
+  const [frequency, setFrequency] = useState("30");
   const [selectedDate, setSelectedDate] = useState([]);
   const [viewData, setViewData] = useState("table");
-  const [category, setCategory] = useState("all");
+  // const [category, setCategory] = useState("all");
   const [editable, setEditable] = useState(null);
 
   // table data
@@ -80,7 +81,6 @@ const HomePage = () => {
           userid: user._id,
           frequency,
           selectedDate,
-          category,
         });
         setLoading(false);
         setAllTransaction(res.data);
@@ -91,7 +91,7 @@ const HomePage = () => {
       }
     };
     getAllTransactions();
-  }, [frequency, selectedDate, category]);
+  }, [frequency, selectedDate]);
 
   // delete handler
   const handleDelete = async (record) => {
@@ -145,9 +145,6 @@ const HomePage = () => {
   return (
     <Layout>
       {loading && <Spinner />}
-      <div>
-        <h2>Expenditure Report</h2>
-      </div>
       <div className="filters">
         <div>
           <h6>Select Range</h6>
@@ -164,8 +161,75 @@ const HomePage = () => {
             />
           )}
         </div>
-        {/* category filter */}
+        <center>
+          <div>
+            <center>
+              <div className="text">
+                <h2>Expenditure Report</h2>
+              </div>
+            </center>
+            <div className="container">
+              <div className="row">
+                <div className="col-sm">
+                  <UnorderedListOutlined
+                    className={`mx-2 ${
+                      viewData === "table" ? "active-icon" : "inactive-icon"
+                    }`}
+                    onClick={() => setViewData("table")}
+                  />
+                  <h6
+                    className={`mx-2 ${
+                      viewData === "table" ? "active-icon" : "inactive-icon"
+                    }`}
+                  >
+                    List
+                  </h6>
+                </div>
+                <div className="col-sm">
+                  <AreaChartOutlined
+                    className={`mx-2 ${
+                      viewData === "analytics" ? "active-icon" : "inactive-icon"
+                    }`}
+                    onClick={() => setViewData("analytics")}
+                  />
+                  <h6
+                    className={`mx-2 ${
+                      viewData === "analytics" ? "active-icon" : "inactive-icon"
+                    }`}
+                  >
+                    Pie Chart
+                  </h6>
+                </div>
+                <div className="col-sm">
+                  <BarChartOutlined
+                    className={`mx-2 ${
+                      viewData === "forecast" ? "active-icon" : "inactive-icon"
+                    }`}
+                    onClick={() => setViewData("forecast")}
+                  />
+                  <h6
+                    className={`mx-2 ${
+                      viewData === "forecast" ? "active-icon" : "inactive-icon"
+                    }`}
+                  >
+                    Forecast
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </center>
+
         <div>
+          <button
+            className="btn btn-primary"
+            onClick={() => setShowModal(true)}
+          >
+            Add New
+          </button>
+        </div>
+        {/* category filter */}
+        {/* <div>
           <h6>Select category:</h6>
           <Select value={category} onChange={(values) => setCategory(values)}>
             <Select.Option value="all">ALL</Select.Option>
@@ -184,29 +248,7 @@ const HomePage = () => {
             <Select.Option value="Entertainment">Entertainment</Select.Option>
             <Select.Option value="Miscellaneous">Miscellaneous</Select.Option>
           </Select>
-        </div>
-        <div className="">
-          <UnorderedListOutlined
-            className={`mx-2 ${
-              viewData === "table" ? "active-icon" : "inactive-icon"
-            }`}
-            onClick={() => setViewData("table")}
-          />
-          <AreaChartOutlined
-            className={`mx-2 ${
-              viewData === "analytics" ? "active-icon" : "inactive-icon"
-            }`}
-            onClick={() => setViewData("analytics")}
-          />
-        </div>
-        <div>
-          <button
-            className="btn btn-primary"
-            onClick={() => setShowModal(true)}
-          >
-            Add New
-          </button>
-        </div>
+        </div> */}
       </div>
       <div className="content">
         {viewData === "table" ? (
