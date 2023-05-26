@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Select, message, Table, DatePicker } from "antd";
-import { UnorderedListOutlined, AreaChartOutlined } from "@ant-design/icons";
+import {
+  UnorderedListOutlined,
+  AreaChartOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import Layout from "../components/Layout/Layout";
 import axios from "axios";
 import Spinner from "../components/Spinner";
 import moment from "moment";
-import { icons } from "antd/es/image/PreviewGroup";
+// import { icons } from "antd/es/image/PreviewGroup";
 import Analytics from "../components/Analytics";
 
 const { RangePicker } = DatePicker;
@@ -17,6 +22,8 @@ const HomePage = () => {
   const [frequency, setFrequency] = useState("custom");
   const [selectedDate, setSelectedDate] = useState([]);
   const [viewData, setViewData] = useState("table");
+  const [category, setCategory] = useState("all");
+  const [editable, setEditable] = useState(null);
 
   // table data
   const columns = [
@@ -43,6 +50,22 @@ const HomePage = () => {
     },
     {
       title: "Actions",
+      render: (text, record) => (
+        <div>
+          <EditOutlined
+            onClick={() => {
+              setEditable(record);
+              setShowModal(true);
+            }}
+          />
+          <DeleteOutlined
+            className="mx-2"
+            onClick={() => {
+              handleDelete(record);
+            }}
+          />
+        </div>
+      ),
     },
   ];
 
@@ -57,6 +80,7 @@ const HomePage = () => {
           userid: user._id,
           frequency,
           selectedDate,
+          category,
         });
         setLoading(false);
         setAllTransaction(res.data);
@@ -67,21 +91,51 @@ const HomePage = () => {
       }
     };
     getAllTransactions();
-  }, [frequency, selectedDate]);
+  }, [frequency, selectedDate, category]);
+
+  // delete handler
+  const handleDelete = async (record) => {
+    try {
+      setLoading(true);
+      await axios.post("/transactions/delete-transaction", {
+        transactionId: record._id,
+      });
+      setLoading(false);
+      message.success("Transaction Deleted");
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      message.error("Unable to Delete");
+    }
+  };
 
   //form handling
   const handleSubmit = async (values) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       setLoading(true);
-      await axios.post("/transactions/add-transaction", {
-        ...values,
-        userid: user._id,
-        key: Math.random(),
-      });
-      message.success("Expense Added Successfully");
-      setLoading(false);
+      if (editable) {
+        await axios.post("/transactions/edit-transaction", {
+          payload: {
+            ...values,
+            userId: user._id,
+            key: Math.random(),
+          },
+          transactionId: editable._id,
+        });
+        setLoading(false);
+        message.success("Expense Added Successfully");
+      } else {
+        await axios.post("/transactions/add-transaction", {
+          ...values,
+          userid: user._id,
+          key: Math.random(),
+        });
+        setLoading(false);
+        message.success("Expense Added Successfully");
+      }
       setShowModal(false);
+      setEditable(null);
     } catch (error) {
       setLoading(false);
       message.error("Failed to add expense");
@@ -91,9 +145,12 @@ const HomePage = () => {
   return (
     <Layout>
       {loading && <Spinner />}
+      <div>
+        <h2>Expenditure Report</h2>
+      </div>
       <div className="filters">
         <div>
-          <h6>Expenditure Report:</h6>
+          <h6>Select Range</h6>
           <Select value={frequency} onChange={(values) => setFrequency(values)}>
             <Select.Option value="7">LAST 1 Week</Select.Option>
             <Select.Option value="30">LAST 1 Month</Select.Option>
@@ -106,6 +163,27 @@ const HomePage = () => {
               onChange={(values) => setSelectedDate(values)}
             />
           )}
+        </div>
+        {/* category filter */}
+        <div>
+          <h6>Select category:</h6>
+          <Select value={category} onChange={(values) => setCategory(values)}>
+            <Select.Option value="all">ALL</Select.Option>
+            <Select.Option value="Food">Food</Select.Option>
+            <Select.Option value="Transportation">Transportation</Select.Option>
+            <Select.Option value="Utilities">Utilities</Select.Option>
+            <Select.Option value="Housing">Housing</Select.Option>
+            <Select.Option value="Insurance">Insurance</Select.Option>
+            <Select.Option value="Medical & Healthcare">
+              Medical & Healthcare
+            </Select.Option>
+            <Select.Option value="Bank payments">Bank payments</Select.Option>
+            <Select.Option value="Personal Spending">
+              Personal Spending
+            </Select.Option>
+            <Select.Option value="Entertainment">Entertainment</Select.Option>
+            <Select.Option value="Miscellaneous">Miscellaneous</Select.Option>
+          </Select>
         </div>
         <div className="">
           <UnorderedListOutlined
@@ -130,19 +208,24 @@ const HomePage = () => {
           </button>
         </div>
       </div>
-      {viewData === "table" ? (
-        <Table columns={columns} dataSource={allTransaction} />
-      ) : (
-        <Analytics allTransaction={allTransaction} />
-      )}
-      <div className="content"></div>
+      <div className="content">
+        {viewData === "table" ? (
+          <Table columns={columns} dataSource={allTransaction} />
+        ) : (
+          <Analytics allTransaction={allTransaction} />
+        )}
+      </div>
       <Modal
-        title="Add Expense"
+        title={editable ? "Edit Expense" : "Add Expense"}
         open={showModal}
         onCancel={() => setShowModal(false)}
         footer={false}
       >
-        <Form layout="vertical" onFinish={handleSubmit}>
+        <Form
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={editable}
+        >
           <Form.Item label="Item Name" name="item">
             <Input type="text" />
           </Form.Item>

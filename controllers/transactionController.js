@@ -3,7 +3,7 @@ const transactionModel = require("../models/transactionModel");
 
 const getAllTransaction = async (req, res) => {
   try {
-    const { frequency, selectedDate } = req.body;
+    const { frequency, selectedDate, category } = req.body;
     const transactions = await transactionModel.find({
       ...(frequency !== "custom"
         ? {
@@ -18,8 +18,32 @@ const getAllTransaction = async (req, res) => {
             },
           }),
       userid: req.body.userid,
+      ...(category !== "all" && { category }),
     });
     res.status(200).json(transactions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
+const deleteTransaction = async (req, res) => {
+  try {
+    await transactionModel.findOneAndDelete({ _id: req.body.transactionId });
+    res.status(200).send("Deleted Successfully");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
+const editTransaction = async (req, res) => {
+  try {
+    await transactionModel.findOneAndUpdate(
+      { _id: req.body.transactionId },
+      req.body.payload
+    );
+    res.status(200).send("Updated Successfully");
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
@@ -37,4 +61,9 @@ const addTransaction = async (req, res) => {
   }
 };
 
-module.exports = { getAllTransaction, addTransaction };
+module.exports = {
+  getAllTransaction,
+  addTransaction,
+  editTransaction,
+  deleteTransaction,
+};
