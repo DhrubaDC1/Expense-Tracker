@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { Modal, Form, Input, Select, message, Table, DatePicker } from "antd";
 import {
   UnorderedListOutlined,
@@ -23,6 +23,7 @@ const HomePage = () => {
   const [frequency, setFrequency] = useState("30");
   const [selectedDate, setSelectedDate] = useState([]);
   const [viewData, setViewData] = useState("table");
+  const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
   // const [category, setCategory] = useState("all");
   const [editable, setEditable] = useState(null);
 
@@ -91,7 +92,7 @@ const HomePage = () => {
       }
     };
     getAllTransactions();
-  }, [frequency, selectedDate]);
+  }, [frequency, selectedDate, reducerValue]);
 
   // delete handler
   const handleDelete = async (record) => {
@@ -107,6 +108,7 @@ const HomePage = () => {
       console.log(error);
       message.error("Unable to Delete");
     }
+    forceUpdate();
   };
 
   //form handling
@@ -140,6 +142,7 @@ const HomePage = () => {
       setLoading(false);
       message.error("Failed to add expense");
     }
+    forceUpdate();
   };
 
   return (
