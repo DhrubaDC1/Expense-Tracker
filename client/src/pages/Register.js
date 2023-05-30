@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Spinner from "../components/Spinner";
+import axios from "axios"; // Axios is a promised-based HTTP client for JavaScript.
+import Spinner from "../components/Spinner"; // importing spinner
 
 const Register = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // for navigating to pages
+  const [loading, setLoading] = useState(false); // for spinner state
   // form submit
   const submitHandler = async (values) => {
     try {
-      setLoading(true);
-      await axios.post("/api/v1/users/register", values);
+      setLoading(true); // spinner on
+      await axios.post("/api/v1/users/register", values); // register by values
       message.success("Registration Successful");
-      setLoading(false);
-      navigate("/login");
+      setLoading(false); // spinner off
+      navigate("/login"); // navigate to login page
     } catch (error) {
       setLoading(false);
       message.error("Something went wrong");
@@ -22,8 +22,9 @@ const Register = () => {
   };
   //prevent for login user
   useEffect(() => {
+    // if there is user
     if (localStorage.getItem("user")) {
-      navigate("/");
+      navigate("/"); // navigate to home
     }
   }, [navigate]);
   return (
@@ -53,4 +54,5 @@ const Register = () => {
   );
 };
 
+// export Register
 export default Register;

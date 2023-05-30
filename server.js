@@ -1,11 +1,11 @@
-const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
-const dotenv = require("dotenv");
-const colors = require("colors");
-const path = require("path");
-const connectDb = require("./config/connectDb");
-const userRoute = require("./routes/userRoute");
+const express = require("express"); // express is a framework for nodejs
+const cors = require("cors"); // for cross-origin requests and data transfer
+const morgan = require("morgan"); // simplifies the process of logging requests to application
+const dotenv = require("dotenv"); // for using .env file without breaking security
+const colors = require("colors"); // for modifying colors
+const path = require("path"); // for handling and transforming file paths.
+const connectDb = require("./config/connectDb"); // for using connectDb.js file inside server.js
+const userRoute = require("./routes/userRoute"); //// for using userRoute.js file inside server.js
 
 //config dot env file
 dotenv.config();
@@ -13,7 +13,7 @@ dotenv.config();
 // database call
 connectDb();
 
-//rest object
+// rest object
 const app = express();
 
 // middlewares

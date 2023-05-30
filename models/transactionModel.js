@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"); // for using mongoDB functions
 
-const transactionSchema = new mongoose.Schema(
+const transactionSchema = new mongoose.Schema( // for creating schema for user
   {
     userid: {
       type: String,
@@ -34,5 +34,6 @@ const transactionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// exporting functions
 const transactionModel = mongoose.model("transactions", transactionSchema);
 module.exports = transactionModel;

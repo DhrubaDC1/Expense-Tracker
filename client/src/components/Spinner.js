@@ -12,4 +12,5 @@ const Spinner = () => {
   );
 };
 
+// exporting spinner
 export default Spinner;

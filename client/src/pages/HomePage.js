@@ -7,25 +7,23 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import Layout from "../components/Layout/Layout";
-import axios from "axios";
-import Spinner from "../components/Spinner";
-import moment from "moment";
-// import { icons } from "antd/es/image/PreviewGroup";
-import Analytics from "../components/Analytics";
+import Layout from "../components/Layout/Layout"; // importing Layout.js for home ui
+import axios from "axios"; // Axios is a promised-based HTTP client for JavaScript.
+import Spinner from "../components/Spinner"; // importing Spinner element from Ant Design
+import moment from "moment"; // for formatting date & time
+import Analytics from "../components/Analytics"; // importing Analytics page
 
-const { RangePicker } = DatePicker;
+const { RangePicker } = DatePicker; // for including datepicker
 
 const HomePage = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [allTransaction, setAllTransaction] = useState([]);
-  const [frequency, setFrequency] = useState("30");
-  const [selectedDate, setSelectedDate] = useState([]);
-  const [viewData, setViewData] = useState("table");
-  const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0);
-  // const [category, setCategory] = useState("all");
-  const [editable, setEditable] = useState(null);
+  const [showModal, setShowModal] = useState(false); // for modal
+  const [loading, setLoading] = useState(false); // for spinner
+  const [allTransaction, setAllTransaction] = useState([]); // for getting transactions
+  const [frequency, setFrequency] = useState("30"); // for range picker
+  const [selectedDate, setSelectedDate] = useState([]); // for range picker custom
+  const [viewData, setViewData] = useState("table"); // for table/analytics/forecast
+  const [reducerValue, forceUpdate] = useReducer((x) => x + 1, 0); // for auto ui update
+  const [editable, setEditable] = useState(null); // for updating using modal
 
   // table data
   const columns = [
@@ -76,15 +74,15 @@ const HomePage = () => {
     // getAll Transactions
     const getAllTransactions = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem("user"));
-        setLoading(true);
+        const user = JSON.parse(localStorage.getItem("user")); // getting data from browser local storage by userid
+        setLoading(true); // for turning on spinner
         const res = await axios.post("/api/v1/transactions/get-transaction", {
           userid: user._id,
           frequency,
           selectedDate,
         });
-        setLoading(false);
-        setAllTransaction(res.data);
+        setLoading(false); // for turning off spinner
+        setAllTransaction(res.data); // for getting all transaction
         console.log(res.data);
       } catch (error) {
         console.log(error);
@@ -97,26 +95,27 @@ const HomePage = () => {
   // delete handler
   const handleDelete = async (record) => {
     try {
-      setLoading(true);
+      setLoading(true); // for turning on spinner
       await axios.post("/api/v1/transactions/delete-transaction", {
-        transactionId: record._id,
+        transactionId: record._id, // deleting by id
       });
-      setLoading(false);
+      setLoading(false); // for turning off spinner
       message.success("Transaction Deleted");
     } catch (error) {
       setLoading(false);
       console.log(error);
       message.error("Unable to Delete");
     }
-    forceUpdate();
+    forceUpdate(); // auto updating ui
   };
 
   //form handling
   const handleSubmit = async (values) => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      setLoading(true);
+      const user = JSON.parse(localStorage.getItem("user")); // getting data from browser local storage by userid
+      setLoading(true); // for turning on spinner
       if (editable) {
+        // editing by id
         await axios.post("/api/v1/transactions/edit-transaction", {
           payload: {
             ...values,
@@ -125,24 +124,25 @@ const HomePage = () => {
           },
           transactionId: editable._id,
         });
-        setLoading(false);
+        setLoading(false); // for turning off spinner
         message.success("Expense Added Successfully");
       } else {
+        // for adding transaction with id
         await axios.post("/api/v1/transactions/add-transaction", {
           ...values,
           userid: user._id,
           key: Math.random(),
         });
-        setLoading(false);
+        setLoading(false); // for turning off spinner
         message.success("Expense Added Successfully");
       }
-      setShowModal(false);
-      setEditable(null);
+      setShowModal(false); // close modal
+      setEditable(null); // close edit mode
     } catch (error) {
       setLoading(false);
       message.error("Failed to add expense");
     }
-    forceUpdate();
+    forceUpdate(); // auto updating ui
   };
 
   return (
@@ -159,7 +159,7 @@ const HomePage = () => {
           </Select>
           {frequency === "custom" && (
             <RangePicker
-              value={selectedDate}
+              value={selectedDate} // set range
               onChange={(values) => setSelectedDate(values)}
             />
           )}
@@ -175,6 +175,7 @@ const HomePage = () => {
               <div className="row">
                 <div className="col-sm">
                   <UnorderedListOutlined
+                    // if selected list
                     className={`mx-2 ${
                       viewData === "table" ? "active-icon" : "inactive-icon"
                     }`}
@@ -190,6 +191,7 @@ const HomePage = () => {
                 </div>
                 <div className="col-sm">
                   <AreaChartOutlined
+                    // if selected analytics
                     className={`mx-2 ${
                       viewData === "analytics" ? "active-icon" : "inactive-icon"
                     }`}
@@ -205,6 +207,7 @@ const HomePage = () => {
                 </div>
                 <div className="col-sm">
                   <BarChartOutlined
+                    // if selected forecast
                     className={`mx-2 ${
                       viewData === "forecast" ? "active-icon" : "inactive-icon"
                     }`}
@@ -224,34 +227,13 @@ const HomePage = () => {
         </center>
 
         <div>
-          <button
+          <button // add new button
             className="btn btn-primary"
             onClick={() => setShowModal(true)}
           >
             Add New
           </button>
         </div>
-        {/* category filter */}
-        {/* <div>
-          <h6>Select category:</h6>
-          <Select value={category} onChange={(values) => setCategory(values)}>
-            <Select.Option value="all">ALL</Select.Option>
-            <Select.Option value="Food">Food</Select.Option>
-            <Select.Option value="Transportation">Transportation</Select.Option>
-            <Select.Option value="Utilities">Utilities</Select.Option>
-            <Select.Option value="Housing">Housing</Select.Option>
-            <Select.Option value="Insurance">Insurance</Select.Option>
-            <Select.Option value="Medical & Healthcare">
-              Medical & Healthcare
-            </Select.Option>
-            <Select.Option value="Bank payments">Bank payments</Select.Option>
-            <Select.Option value="Personal Spending">
-              Personal Spending
-            </Select.Option>
-            <Select.Option value="Entertainment">Entertainment</Select.Option>
-            <Select.Option value="Miscellaneous">Miscellaneous</Select.Option>
-          </Select>
-        </div> */}
       </div>
       <div className="content">
         {viewData === "table" ? (
@@ -314,4 +296,5 @@ const HomePage = () => {
   );
 };
 
+// exporting homepage functions
 export default HomePage;

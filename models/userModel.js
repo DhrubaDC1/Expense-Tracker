@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"); // express is a framework for nodejs
 
 // schema design
 const userSchema = new mongoose.Schema(

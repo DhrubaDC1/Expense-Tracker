@@ -1,23 +1,26 @@
-const moment = require("moment");
-const transactionModel = require("../models/transactionModel");
+const moment = require("moment"); // used to format date & time
+const transactionModel = require("../models/transactionModel"); // used to import transactionModel.js
 
+// get all transaction
 const getAllTransaction = async (req, res) => {
   try {
-    const { frequency, selectedDate } = req.body;
+    const { frequency, selectedDate } = req.body; // importing frequency, selectedDate from body
     const transactions = await transactionModel.find({
-      ...(frequency !== "custom"
+      ...(frequency !== "custom" //if not custom
         ? {
             date: {
-              $gt: moment().subtract(Number(frequency), "d").toDate(),
+              $gt: moment().subtract(Number(frequency), "d").toDate(), // difference of frequency and current date
             },
           }
         : {
+            // if custom
             date: {
+              // difference between selected range of date
               $gte: selectedDate[0],
               $lte: selectedDate[1],
             },
           }),
-      userid: req.body.userid,
+      userid: req.body.userid, // request body of current user
     });
     res.status(200).json(transactions);
   } catch (error) {
@@ -26,9 +29,10 @@ const getAllTransaction = async (req, res) => {
   }
 };
 
+// delete selected transaction
 const deleteTransaction = async (req, res) => {
   try {
-    await transactionModel.findOneAndDelete({ _id: req.body.transactionId });
+    await transactionModel.findOneAndDelete({ _id: req.body.transactionId }); // find the transaction and delete
     res.status(200).send("Deleted Successfully");
   } catch (error) {
     console.log(error);
@@ -36,8 +40,10 @@ const deleteTransaction = async (req, res) => {
   }
 };
 
+// edit selected transaction
 const editTransaction = async (req, res) => {
   try {
+    // find the transaction and update
     await transactionModel.findOneAndUpdate(
       { _id: req.body.transactionId },
       req.body.payload
@@ -49,10 +55,11 @@ const editTransaction = async (req, res) => {
   }
 };
 
+// add new transaction
 const addTransaction = async (req, res) => {
   try {
-    const newTransaction = new transactionModel(req.body);
-    await newTransaction.save();
+    const newTransaction = new transactionModel(req.body); // create new transaction using transactionModel
+    await newTransaction.save(); // save the transaction to database
     res.status(201).send("Expense Created");
   } catch (error) {
     console.log(error);
@@ -60,6 +67,7 @@ const addTransaction = async (req, res) => {
   }
 };
 
+// exporting funsctions
 module.exports = {
   getAllTransaction,
   addTransaction,

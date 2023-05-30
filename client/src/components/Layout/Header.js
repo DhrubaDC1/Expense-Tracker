@@ -2,20 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
 
-
 const Header = () => {
-  const [loginUser, setLoginUser] = useState("");
-  const navigate = useNavigate();
+  const [loginUser, setLoginUser] = useState(""); // for login user name
+  const navigate = useNavigate(); // for navigating to pages
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user")); // getting data from browser local storage by userid
+    // if user is available
     if (user) {
       setLoginUser(user);
     }
   }, []);
   const logoutHandler = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("user"); // logout user by userid
     message.success("Log out Successfully");
-    navigate("/login");
+    navigate("/login"); // navigate to login page
   };
   return (
     <>
@@ -66,4 +66,5 @@ const Header = () => {
   );
 };
 
+// exporting header functions
 export default Header;

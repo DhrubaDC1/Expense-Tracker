@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Spinner from "../components/Spinner";
+import axios from "axios"; // Axios is a promised-based HTTP client for JavaScript.
+import Spinner from "../components/Spinner"; // importing Spinner.js
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // for navigating to pages
+  const [loading, setLoading] = useState(false); // for spinner state
   // form submit
   const submitHandler = async (values) => {
     try {
-      setLoading(true);
-      const { data } = await axios.post("/api/v1/users/login", values);
-      setLoading(false);
+      setLoading(true); // spinner on
+      const { data } = await axios.post("/api/v1/users/login", values); // login user by user data
+      setLoading(false); // spinner off
       message.success("Login Successful");
       localStorage.setItem(
         "user",
-        JSON.stringify({ ...data.user, password: "" })
+        JSON.stringify({ ...data.user, password: "" }) // erase the password from local storage for security
       );
-      navigate("/");
+      navigate("/"); // navigate to home
     } catch (error) {
       setLoading(false);
       message.error("Something went wrong");
@@ -26,8 +26,9 @@ const Login = () => {
   };
   //prevent for login user
   useEffect(() => {
+    // if there is user
     if (localStorage.getItem("user")) {
-      navigate("/");
+      navigate("/"); // navigate to home
     }
   }, [navigate]);
   return (
@@ -54,4 +55,5 @@ const Login = () => {
   );
 };
 
+// export login
 export default Login;
