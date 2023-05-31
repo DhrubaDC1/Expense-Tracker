@@ -33,15 +33,10 @@ You can also access via this link: [Expense Tracker App](https://expense-trackin
 
 ## Screenshots
 
-![Expense Tracker App Screenshot](screenshots/ss1.png) 
-![Expense Tracker App Screenshot](screenshots/ss2.png)
-![Expense Tracker App Screenshot](screenshots/ss3.png) 
-![Expense Tracker App Screenshot](screenshots/ss4.png)
-![Expense Tracker App Screenshot](screenshots/ss5.png) 
-![Expense Tracker App Screenshot](screenshots/ss6.png)
-![Expense Tracker App Screenshot](screenshots/ss8.png)
-![Expense Tracker App Screenshot](screenshots/ss9.png) 
-![Expense Tracker App Screenshot](screenshots/ss10.png)
+<img src="screenshots/ss1.png" alt="Expense Tracker App Screenshot" style="width: 48%;" /> <img src="screenshots/ss2.png" alt="Expense Tracker App Screenshot" style="width: 48%;" />
+<img src="screenshots/ss3.png" alt="Expense Tracker App Screenshot" style="width: 48%;" /> <img src="screenshots/ss4.png" alt="Expense Tracker App Screenshot" style="width: 48%;" />
+<img src="screenshots/ss5.png" alt="Expense Tracker App Screenshot" style="width: 48%;" /> <img src="screenshots/ss6.png" alt="Expense Tracker App Screenshot" style="width: 48%;" />
+<img src="screenshots/ss8.png" alt="Expense Tracker App Screenshot" style="width: 48%;" /> <img src="screenshots/ss9.png" alt="Expense Tracker App Screenshot" style="width: 48%;" />
 
 
 ## License
