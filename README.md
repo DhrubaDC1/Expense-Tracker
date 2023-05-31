@@ -17,9 +17,8 @@ The Expense Tracker App is a web application built with the MERN stack (MongoDB,
 - Frontend: React.js, Ant Design UI library, Chart.js
 - Backend: Node.js, Express.js
 - Database: MongoDB
-- Authentication: JSON Web Tokens (JWT)
 - Data Visualization: React Chart.js
-- Deployment: Heroku, Netlify, or similar platforms
+- Deployment: Cyclic.sh
 
 ## Installation and Usage
 
@@ -30,9 +29,20 @@ The Expense Tracker App is a web application built with the MERN stack (MongoDB,
 5. Start the frontend development server using `npm run client`.
 6. Access the application in your browser at `http://localhost:3000`.
 
+You can also access via this link: [Expense Tracker App](https://expense-tracking-app.cyclic.app)
+
 ## Screenshots
 
-Include relevant screenshots of the application here.
+![Expense Tracker App Screenshot](screenshots/ss1.png) 
+![Expense Tracker App Screenshot](screenshots/ss2.png)
+![Expense Tracker App Screenshot](screenshots/ss3.png) 
+![Expense Tracker App Screenshot](screenshots/ss4.png)
+![Expense Tracker App Screenshot](screenshots/ss5.png) 
+![Expense Tracker App Screenshot](screenshots/ss6.png)
+![Expense Tracker App Screenshot](screenshots/ss8.png)
+![Expense Tracker App Screenshot](screenshots/ss9.png) 
+![Expense Tracker App Screenshot](screenshots/ss10.png)
+
 
 ## License
 
