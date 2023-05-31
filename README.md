@@ -49,12 +49,21 @@ Contributions are welcome! Please feel free to open a pull request or submit an 
 
 ## Acknowledgements
 
-- Mention any acknowledgements or resources that you found helpful during the development of the application.
+- React Documentations: https://react.dev/learn
+- YouTube: https://www.youtube.com/@NetNinja
+- YouTube: https://www.youtube.com/c/techinfoyt
+- GitHub: https://github.com/techinfo-youtube
 
 ## Contact
 
-- Provide your contact information or a way for users to get in touch with you for support or inquiries.
+## Contacts
 
+- Dhruba Chakraborty
+  - Email: dhruba.chakraborty.2000@gmail.com
+  - LinkedIn: [LinkedIn Profile](https://linkedin.com/in/dhruba-chakraborty)
+  - Twitter: [ Twitter Profile ](https://twitter.com/DhrubaC91797646)
+  - Site: [ My CV ](https://sites.google.com/view/dhrubac/cv)
+  - Photography Site: [ DPgraphy ](https://sites.google.com/view/dpgraphy)
 ---
 
 Start using the Expense Tracker App and take control of your expenses today!
